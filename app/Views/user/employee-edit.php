@@ -5,11 +5,11 @@
 
 <main id="main" class="main">
     <div class="pagetitle container">
-        <h1>Edit Employee</h1>
+        <h1>Add Employee</h1>
         <nav class="d-flex justify-content-between">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/" class="text-info">Home</a></li>
-                <li class="breadcrumb-item active">Edit Employee</li>
+                <li class="breadcrumb-item active">Add Employee</li>
 
             </ol>
         </nav>
@@ -17,11 +17,11 @@
 
     <section>
         <div class="row">
-            <div class="col-md-12">
-                <div class="card shadow container">
-                    <div class="card-body">
-                        <h5 class="card-title fw-bold">Employee Information</h5>
-                        <form id="employeeFormEdit" class="row" enctype="multipart/form-data">
+            <form id="employeeFormEdit" class="row" enctype="multipart/form-data"> 
+                <div class="col-md-8">
+                    <div class="card shadow container">
+                        <div class="card-body row">
+                            <h5 class="card-title fw-bold">Employee Information</h5>
                             <div class="form-group mb-3 col-md-6">
                                 <label for="first_name">First Name</label>
                                 <input type="text" class="form-control" id="first_name" name="first_name" value="<?= $employee['emp_fname'] ?>">
@@ -38,29 +38,38 @@
                                 <label for="address">Address</label>
                                 <input type="text" class="form-control" id="address" name="address" value="<?= $employee['emp_address'] ?>">
                             </div>
-                            <div class="form-group mb-3 col-md-6">
-                                <label for="first_name">Upload Image</label>
-                                <input type="file" class="form-control" id="picture" name="picture">
-                            </div>
-                            <!-- image here -->
-                            <div class="col-sm-12" id="img-preview">
-                                <img src="<?= base_url('images/' . $employee['emp_image']) ?>" class="img-thumbnail img-fluid mb-3 w-25" alt="Employee Image">
-                            </div>
-
-
-
-                            <div class="text-end">
-                                <button type="button" class="btn btn-secondary text-light"
-                                    onclick="window.location.href = '<?= base_url('user/employee') ?>' ">
-                                    Back
-                                </button>
-                                <button type="submit" class="btn btn-info fw-semi">Update</button>
-                            </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
 
-            </div>
+                <div class="col-md-4">
+                    <div class="card shadow container">
+                        <h5 class="card-title fw-bold">Upload Image</h5>
+                        <div class="card-body">
+                            <div class="col-sm-12 mb-3">
+                                <input type="file" class="form-control" id="picture" name="picture"
+                                    accept="image/*">
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12" id="img-preview">
+                                    <img src="<?= base_url('images/' . $employee['emp_image']) ?>" class="img-thumbnail img-fluid mb-3 w-100" alt="Employee Image">
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-end">
+                    <button type="button" class="btn btn-secondary text-light"
+                        onclick="window.location.href = '<?= base_url('user/employee') ?>' ">
+                        Back
+                    </button>
+                    <button type="submit" class="btn btn-info fw-semi">Update</button>
+                </div>
+            </form>
         </div>
     </section>
 </main>

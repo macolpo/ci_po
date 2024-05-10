@@ -21,6 +21,7 @@ $routes->get('user/employee', 'EmployeeController::employee');
 $routes->post('user/employee', 'EmployeeController::get_employee_data');
 $routes->get('user/employee-add', 'EmployeeController::employeeAdd');
 $routes->post('user/employee-insert', 'EmployeeController::employeeAddInsert');
+$routes->get('user/employee-view/(:num)', 'EmployeeController::employeeView/$1');
 $routes->get('user/employee-edit/(:num)', 'EmployeeController::employeeEditPage/$1');
 $routes->post('user/employee-update/(:num)', 'EmployeeController::employeeUpdate/$1');
 $routes->post('user/employee-delete', 'EmployeeController::employeeDelete/$1');

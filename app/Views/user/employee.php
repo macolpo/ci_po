@@ -25,10 +25,32 @@
             <div class="col-sm-12">
                 <div class="card shadow container">
                     <div class="card-body py-3">
-                        <form id="filterTable">
-                            <div class="col-sm-12 align-items-center">
-                                <label>Select Date</label>
-                                <input type="month" name="month" id="month" class="form-control">
+                        <form id="filterTable" class="row">
+                            <div class="col-sm-4">
+                                <label>Start Date</label>
+                                <input type="date" name="startdate" id="startdate" class="form-control">
+                            </div>
+                            <div class="col-sm-4">
+                                <label>End Date</label>
+                                <input type="date" name="enddate" id="enddate" class="form-control">
+                            </div>
+                            <div class="col-sm-3">
+                                <label>Created By</label>
+                                <select name="user" id="user" class="form-select">
+                                    <option value="" selected>All</option>
+                                    <?php if (!empty($user)) : ?>
+                                        <?php foreach ($user as $user) : ?>
+                                            <option value="<?= $user['user_id']; ?>"><?= $user['first_name']; ?></option>
+                                        <?php endforeach; ?>
+                                    <?php else : ?>
+                                        <option value="" selected disabled>No user found</option>
+                                    <?php endif; ?>
+                                </select>
+                            </div>
+                            <div class="col-sm-1 mt-4">
+                                <button class="btn bg-success-subtle py-2" type="button" onclick="location.reload()">
+                                    <i class="bi bi-arrow-clockwise"></i>
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -64,14 +86,15 @@
 </main>
 <script>
 $(document).ready(function() {
-    $('#month').change(function() {
+    $('#startdate, #enddate, #user').change(function() {
         fetchData();
     });
-    
+
     $('#myTable').DataTable({
         processing: true 
     });
     fetchData();
+    reset();
 });
 
 function fetchData() {
@@ -86,7 +109,6 @@ function fetchData() {
         contentType: false,
         success: function(response) {
             dataTables(response);
-            
         },
         error: function(xhr, status, error) {
             console.error(status + ': ' + error);
@@ -126,7 +148,8 @@ function dataTables(data) {
             {
                 data: 'employee_id',
                 render: function(data, type, row) {
-                    return '<a class="btn mx-1 btn-sm btn-success" href="<?= base_url('user/employee-edit/') ?>' + data + '"><i class="bi bi-pencil-square" style="font-size:12px"></i></a>' +
+                    return '<a class="btn mx-1 btn-sm btn-primary" href="<?= base_url('user/employee-view/') ?>' + data + '"><i class="bi bi-eye" style="font-size:12px"></i></a>' +
+                    '<a class="btn mx-1 btn-sm btn-success" href="<?= base_url('user/employee-edit/') ?>' + data + '"><i class="bi bi-pencil-square" style="font-size:12px"></i></a>' +
                     '<a class="btn btn-sm btn-danger" onclick="deleteData(' + data + ')"><i class="bi bi-trash3-fill" style="font-size:12px"></i></a>';
                 }
             },
@@ -174,7 +197,6 @@ function deleteData(id) {
         }
     });
 }
-
 </script>
 
 <?php include('layout/layout-bottom.php') ?>

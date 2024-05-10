@@ -5,11 +5,14 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 use App\Models\EmployeeModel;
+use App\Models\UserModel;
 
 class EmployeeController extends BaseController
 {
     public function employee()
     {
+        $UserModel = new UserModel();
+
         $session = session();
 
         if (!$session->has('user_id')) {
@@ -21,12 +24,16 @@ class EmployeeController extends BaseController
             'first_name' => $session->get('first_name')
         ];
 
-        return view('user/employee', $userdata);
+        $data['user'] = $UserModel->findAll();
+
+        return view('user/employee', $userdata + $data);
     }
     // employee data
     public function get_employee_data()
     {
-        $month = esc($this->request->getPost('month'));
+        $startdate = esc($this->request->getPost('startdate'));
+        $enddate = esc($this->request->getPost('enddate'));
+        $user = esc($this->request->getPost('user'));
 
         $model = new EmployeeModel();
         $builder = $model->select(
@@ -36,11 +43,16 @@ class EmployeeController extends BaseController
                         ->join('inventory_tbl AS i', 'i.inventory_id = e.inventory_id', 'left')
                         ->join('user_tbl AS u', 'u.user_id = e.created_by', 'left');
 
-            if (!empty($month)) {
-                $year = date('Y', strtotime($month));
-                $month_number = date('m', strtotime($month));
-                $builder->where("YEAR(e.date_join)", $year);
-                $builder->where("MONTH(e.date_join)", $month_number);
+            if (!empty($startdate)) {
+                $builder->where("DATE(e.date_join) >= ", $startdate);
+            }
+            
+            if (!empty($enddate)) {
+                $builder->where("DATE(e.date_join) <= ", $enddate);
+            }
+            
+            if (!empty($user)) {
+                $builder->where("e.created_by", $user);
             }
 
             $employees = $builder->groupBy('e.employee_id')->findAll();
@@ -162,6 +174,26 @@ class EmployeeController extends BaseController
         } else {
             return $this->response->setJSON(['status' => 'validation_error', 'errors' => $this->validator->getErrors()]);
         }
+    }
+
+
+    public function employeeView($id) {
+        $editEmployee = new EmployeeModel();
+    
+        $session = session();
+
+        if (!$session->has('user_id')) {
+            return redirect()->to('/');
+        }
+        
+        $userdata = [
+            'user_id' => $session->get('user_id'),
+            'first_name' => $session->get('first_name')
+        ];
+    
+        $data['employee'] = $editEmployee->where('employee_id', $id)->first();
+        
+        return view('user/employee-view', $data + $userdata);
     }
 
     
