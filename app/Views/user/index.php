@@ -4,5 +4,6 @@
 
 <title>Dashboard</title>
 <main id="main" class="main">
+    CODEIGNITER
 </main>
 <?php include('layout/layout-bottom.php') ?>
