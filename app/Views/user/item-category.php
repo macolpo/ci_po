@@ -4,16 +4,17 @@
 <?php include('aside.php')?>
 
 <main id="main" class="main">
-    <div class="pagetitle container">
+    <div class="pagetitle">
         <h1>Manage Category</h1>
-        <nav class="d-flex justify-content-between">
+        <nav class="d-flex justify-content-between align-items-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/" class="text-info">Home</a></li>
                 <li class="breadcrumb-item active">Category</li>
             </ol>
 
-            <button type="button" class="btn btn-info text-light p-0 align-items-center"
-            style="width: 30px; height: 30px;" data-bs-toggle="modal" data-bs-target="#addModal">
+            <button type="button" class="btn btn-info text-light p-0 p-1 align-items-center"
+            data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Add Category"
+            id="modalForAdd">
                 <i class="bi bi-plus"></i>
             </button>
 
@@ -23,7 +24,7 @@
     <section>
         <div class="row">
             <div class="col-sm-12">
-                <div class="card shadow container">
+                <div class="card shadow">
                     <div class="card-body py-5 ">
                         <div class="table-responsive">
                             <table id="myTable" class="table display w-100 nowrap">
@@ -109,7 +110,7 @@ function fetchData() {
                 render: function(data, type, row) {
                     return `
                     <a class="btn btn-sm btn-success" id="editBtn" data-id="`+ data +`" data-category="` + row.category_name + `">
-                        <i class="bi bi-pencil-fill" style="font-size:12px"></i>
+                        <i class="bi bi-pencil-fill" style="font-size:9px"></i>
                     </a>`
 ;
                 }
@@ -163,17 +164,21 @@ $(document).ready(function() {
         });
       
     });
-    
+    $(document).on("click", "#modalForAdd", function() {
+        $('#addModal').modal('show');
+    });
+
 // ----------------- edit modal
     $(document).on("click", "#editBtn", function() {
-        var editModal = new bootstrap.Modal(document.getElementById('editModal'));
+        $('#editModal').modal('show');
+
         var categoryId = $(this).data("id");
         var category = $(this).data("category");
 
         $("#editCategory").val(category);
         $("#categoryId").val(categoryId);
-        editModal.show();
     });
+
     $('#categoryEditForm').submit(function(e) {
         e.preventDefault();
         var formData = new FormData(this); 

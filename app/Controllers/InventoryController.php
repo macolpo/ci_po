@@ -181,19 +181,11 @@ class InventoryController extends BaseController
                 'inventory_pn' => $this->request->getPost('product_no'), // No need to escape here
                 'inventory_sn' => $this->request->getPost('serial_no'), // No need to escape here
             ];
-    
-            $existingInventory = $inventoryModel->where($data)->first();
-    
-            if ($existingInventory) {
-                return $this->response->setJSON(['status' => 'error', 'message' => 'Inventory already exists']);
+            $updated = $inventoryModel->set($data)->where('inventory_id', $id)->update();
+            if ($updated) {
+                return $this->response->setJSON(['status' => 'success']);
             } else {
-                $updated = $inventoryModel->set($data)->where('inventory_id', $id)->update();
-    
-                if ($updated) {
-                    return $this->response->setJSON(['status' => 'success']);
-                } else {
-                    return $this->response->setJSON(['status' => 'error', 'message' => 'Failed to update inventory.']);
-                }
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Failed to update inventory.']);
             }
         } else {
             return $this->response->setJSON(['status' => 'validation_error', 'errors' => $this->validator->getErrors()]);

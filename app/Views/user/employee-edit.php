@@ -1,16 +1,16 @@
-<title>Dashboard - Edit Employee</title>
+<title>Edit Employee</title>
 <?php include('layout/layout-top.php') ?>
 <?php include('navbar.php')?>
 <?php include('aside.php')?>
 
 <main id="main" class="main">
-    <div class="pagetitle container">
-        <h1>Add Employee</h1>
+    <div class="pagetitle">
+        <h1>Edit Employee</h1>
         <nav class="d-flex justify-content-between">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/" class="text-info">Home</a></li>
-                <li class="breadcrumb-item active">Add Employee</li>
-
+                <li class="breadcrumb-item"><a href="<?= base_url('user/') ?>" class="text-info">Home</a></li>
+                <li class="breadcrumb-item"><a href="<?= base_url('user/employee') ?>">Employee</a></li>
+                <li class="breadcrumb-item active">Edit Employee</li>
             </ol>
         </nav>
     </div>
@@ -19,7 +19,7 @@
         <div class="row">
             <form id="employeeFormEdit" class="row" enctype="multipart/form-data"> 
                 <div class="col-md-8">
-                    <div class="card shadow container">
+                    <div class="card shadow px-3 py-1">
                         <div class="card-body row">
                             <h5 class="card-title fw-bold">Employee Information</h5>
                             <div class="form-group mb-3 col-md-6">
@@ -43,7 +43,7 @@
                 </div>
 
                 <div class="col-md-4">
-                    <div class="card shadow container">
+                    <div class="card shadow px-3 py-1">
                         <h5 class="card-title fw-bold">Upload Image</h5>
                         <div class="card-body">
                             <div class="col-sm-12 mb-3">
@@ -53,7 +53,7 @@
 
                             <div class="row">
                                 <div class="col-sm-12" id="img-preview">
-                                    <img src="<?= base_url('images/' . $employee['emp_image']) ?>" class="img-thumbnail img-fluid mb-3 w-100" alt="Employee Image">
+                                    <img src="<?= base_url('images/' . $employee['emp_image']) ?>" class="img-thumbnail img-fluid w-100" alt="Employee Image">
                                 </div>
                             </div>
 
@@ -92,7 +92,9 @@ $(document).ready(function () {
                     Swal.fire({
                         icon: 'success',
                         title: 'Success!',
-                        text: 'Employee Edit successfully!',
+                        text: 'Employee update successfully!',
+                        showConfirmButton: false,
+                        timer: 2000,
                     }).then((result) => {
                         window.location.href = '<?= base_url('user/employee') ?>';
                     });
@@ -127,7 +129,7 @@ $('#picture').on('change', function(e) {
 
                 // Create image element and add to col-sm-4
                 var imgElement = $('<div class="col-lg-12"><img src="' + imgSrc +
-                    '" class="img-thumbnail img-fluid mb-3 w-25" alt="Preview"></div>');
+                    '" class="img-thumbnail img-fluid w-100" alt="Preview"></div>');
                 $('#img-preview').append(imgElement);
             };
 

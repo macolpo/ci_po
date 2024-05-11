@@ -4,13 +4,13 @@
 <?php include('aside.php')?>    
 
 <main id="main" class="main">
-    <div class="pagetitle container">
+    <div class="pagetitle">
         <h1>Add Employee</h1>
         <nav class="d-flex justify-content-between">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/" class="text-info">Home</a></li>
+                <li class="breadcrumb-item"><a href="<?= base_url('user/') ?>" class="text-info">Home</a></li>
+                <li class="breadcrumb-item"><a href="<?= base_url('user/employee') ?>">Employee</a></li>
                 <li class="breadcrumb-item active">Add Employee</li>
-
             </ol>
         </nav>
     </div>
@@ -19,7 +19,7 @@
         <div class="row">
             <form id="employeeForm" class="row" enctype="multipart/form-data"> 
                 <div class="col-md-8">
-                    <div class="card shadow container">
+                    <div class="card shadow px-3 py-1">
                         <div class="card-body row">
                             <h5 class="card-title fw-bold">Employee Information</h5>
                             <div class="form-group mb-3 col-md-6">
@@ -27,7 +27,7 @@
                                 <input type="text" class="form-control" id="first_name" name="first_name">
                             </div>
                             <div class="form-group mb-3 col-md-6">
-                                <label for="middle_name">Middle Name</label>
+                                <label for="middle_name">Middle Name<span class="text-secondary">(Optional)</span></label>
                                 <input type="text" class="form-control" id="middle_name" name="middle_name">
                             </div>
                             <div class="form-group mb-3 col-md-6">
@@ -43,7 +43,7 @@
                 </div>
 
                 <div class="col-md-4">
-                    <div class="card shadow container">
+                    <div class="card shadow px-3 py-1">
                         <h5 class="card-title fw-bold">Upload Image</h5>
                         <div class="card-body">
                             <div class="col-sm-12 mb-3">
@@ -140,7 +140,7 @@ $('#picture').on('change', function(e) {
 
                 // Create image element and add to col-sm-4
                 var imgElement = $('<div class="col-sm-12"><img src="' + imgSrc +
-                    '" class="" width="100%" height="200"  alt="Preview"></div>');
+                    '" class="img-fluid img-thumbnail w-100"  alt="Preview"></div>');
                 $('#img-preview').append(imgElement);
             };
 

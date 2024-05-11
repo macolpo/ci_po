@@ -4,55 +4,64 @@
 <?php include('aside.php')?>
 
 <main id="main" class="main">
-    <div class="pagetitle container">
-        <h1>View Employee Information</h1>
-        <nav class="d-flex justify-content-between">
+    <div class="pagetitle">
+        <h1>View Employee</h1>
+        <nav class="d-flex justify-content-between align-items-center">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/" class="text-info">Home</a></li>
+                <li class="breadcrumb-item"><a href="<?= base_url('user/') ?>" class="text-info">Home</a></li>
+                <li class="breadcrumb-item"><a href="<?= base_url('user/employee') ?>">Employee</a></li>
                 <li class="breadcrumb-item active">View Employee</li>
-
             </ol>
+            <div>
+                <a href="<?= base_url('images/' . $employee['emp_image']) ?>" class="btn btn-info text-light p-0 p-1 align-items-center"
+                download data-bs-toggle="tooltip" data-bs-placement="left"
+                data-bs-title="Download Image">
+                    <i class="bi bi-images"></i>
+                </a>
+
+                <button type="button" id="saveAsPDF" class="btn btn-info text-light p-0 p-1 align-items-center"
+                    data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Download">
+                    <i class="bi bi-download"></i>
+                </button>
+            </div>
+          
         </nav>
     </div>
 
     <section>
         <div class="row">
-                <div class="col-md-4">
-                    <div class="card shadow container">
-                        <div class="card-body">
-                            <h5 class="card-title fw-bold py-4">Employee Image</h5>
-                            <div class="col-sm-12" id="img-preview">
-                                <img src="<?= base_url('images/' . $employee['emp_image']) ?>" class="img-fluid img-thumbnail"  alt="Employee Image">
+            <div class="container">
+                <div class="col-sm-12">
+                    <div id="printableArea">
+                        <div class="card shadow px-4 py-2">
+                            <div class="card-title fw-bold">
+                                Employee Information
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <img src="<?= base_url('images/' . $employee['emp_image']) ?>" class="img-fluid img-thumbnail w-100"  alt="Employee Image">
+                                </div>
+                                <div class="col-sm-8">
+                                     <div>
+                                        <span class="fw-bold">Employee ID:</span>
+                                        <?= ucwords($employee['employee_id']) ?>
+                                    </div>
+                                    <div>
+                                        <span class="fw-bold">Fullname:</span>
+                                        <?= ucwords($employee['emp_fname'].' '. substr($employee['emp_mname'],0,1).'. '. $employee['emp_sname']) ?>
+                                    </div>
+                                    <div>
+                                        <span class="fw-bold">Address:</span>
+                                        <?= ucwords($employee['emp_address']) ?>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="col-md-8">
-                    <div class="card shadow container">
-                        <div class="card-body">
-                            <h5 class="card-title fw-bold py-4">Employee Information</h5>
-                                <div class="col-sm-12 mb-3">
-                                    <span class="fw-bold">Fullname:</span>
-                                    <?= ucwords($employee['emp_fname'] . ' '. substr($employee['emp_mname'],0, 1) .'. '.$employee['emp_sname']) ?>
-                                </div>
-
-                                <div class="col-sm-12 mb-3">
-                                    <span class="fw-bold">Address:</span> <?= $employee['emp_address'] ?>
-                                </div>
-
-                            
-                        </div>
-                    </div>
-                </div>
-
                 <div class="text-end">
-                    <button type="button" class="btn btn-secondary text-light"
-                        onclick="window.location.href = '<?= base_url('user/employee') ?>' ">
-                        Back
-                    </button>
+                    <a href="<?= base_url('user/employee') ?>" class="btn btn-sm bg-secondary text-light">Back</a>
                 </div>
-
             </div>
         </div>
     </section>
@@ -63,12 +72,12 @@
 $(document).ready(function () {
     $('#employeeFormEdit').submit(function(e) {
         e.preventDefault();
-        var formData = new FormData(this);
+        var forsmata = new Forsmata(this);
 
         $.ajax({
             url: '<?= base_url("user/employee-update/{$employee['employee_id']}") ?>',
             method: 'POST',
-            data: formData,
+            data: forsmata,
             processData: false,
             contentType: false,
             success: function(response) {
@@ -93,5 +102,30 @@ $(document).ready(function () {
             }
         });
     });
+});
+// download pdf
+document.getElementById('saveAsPDF').addEventListener('click', function() {
+    // Select the div to be converted to PDF
+    const element = document.getElementById('printableArea');
+
+    // Set options for the PDF conversion
+    const options = {
+        margin: 10,
+        filename: '<?= $employee['emp_fname'] ?> information.pdf',
+        image: {
+            type: 'jpeg',
+            quality: 0.98
+        },
+        html2canvas: {
+            scale: 2
+        },
+        jsPDF: {
+            unit: 'mm',
+            format: 'a4',
+            orientation: 'portrait'
+        }
+    };
+
+    html2pdf().from(element).set(options).save();
 });
 </script>

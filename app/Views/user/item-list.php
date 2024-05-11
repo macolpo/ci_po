@@ -4,7 +4,7 @@
 <?php include('aside.php')?>
 
 <main id="main" class="main">
-    <div class="pagetitle container">
+    <div class="pagetitle">
         <h1>Manage Item</h1>
         <nav class="d-flex justify-content-between">
             <ol class="breadcrumb">
@@ -13,9 +13,9 @@
             </ol>
 
             <div class="buttons">
-                <button type="button" class="btn btn-info text-light p-0 align-items-center"
-                    style="width: 30px; height: 30px;"
-                    onclick="window.location.href = '<?= base_url('user/item-add') ?>' ">
+                <button type="button" class="btn btn-info text-light p-0 p-1 align-items-center"
+                data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Add Item"
+                onclick="window.location.href = '<?= base_url('user/item-add') ?>' ">
                     <i class="bi bi-plus"></i>
                 </button>
             </div>
@@ -26,7 +26,7 @@
         <div class="row">
 
             <div class="col-sm-12">
-                <div class="card shadow container">
+                <div class="card shadow">
                     <div class="card-body py-3">
                         <form id="filterTable">
                             <div class="col-sm-12 align-items-center">
@@ -48,7 +48,7 @@
             </div>
 
             <div class="col-sm-12">
-                <div class="card shadow container">
+                <div class="card shadow">
                     <div class="card-body py-5 ">
                         <div class="table-responsive">
                             <table id="myTable" class="table display w-100 nowrap">
@@ -147,8 +147,8 @@ function dataTables(info) {
             {
                 data: 'inventory_id',   
                 render: function(data, type, row) {
-                    return '<a class="btn mx-1 btn-sm btn-success" href="<?= base_url('user/item-edit/') ?>' + data + '"><i class="bi bi-pencil-square" style="font-size:12px"></i></a>' +
-                    '<a class="btn btn-sm btn-danger" onclick="deleteData(' + data + ')"><i class="bi bi-trash3-fill" style="font-size:12px"></i></a>';
+                    return '<a class="btn mx-1 btn-sm btn-success" href="<?= base_url('user/item-edit/') ?>' + data + '"><i class="bi bi-pencil-square" style="font-size:9px"></i></a>' +
+                    '<a class="btn btn-sm btn-danger" onclick="deleteData(' + data + ')"><i class="bi bi-trash3-fill" style="font-size:9px"></i></a>';
                 }
             },
         ],

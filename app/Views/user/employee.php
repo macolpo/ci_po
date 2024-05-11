@@ -4,26 +4,34 @@
 <?php include('aside.php')?>
 
 <main id="main" class="main">
-    <div class="pagetitle container">
+    <div class="pagetitle">
         <h1>Manage Employee</h1>
-        <nav class="d-flex justify-content-between">
+        <nav class="d-flex justify-content-between align-items-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/" class="text-info">Home</a></li>
                 <li class="breadcrumb-item active">Employee</li>
             </ol>
 
-                <button type="button" class="btn btn-info text-light p-0 align-items-center"
-                    style="width: 30px; height: 30px;"
+            <div class="buttons">
+                <a type="button" href="<?= base_url('user/employee-activity-log') ?>" class="btn btn-info text-light p-0 p-1 align-items-center"
+                data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Activity Log">
+                    <i class="bi bi-clock-history"></i>
+                </a>
+                <button type="button" class="btn btn-info text-light p-0 p-1 align-items-center"
+                data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Add Employee"
                     onclick="window.location.href = '<?= base_url('user/employee-add') ?>' ">
                     <i class="bi bi-plus"></i>
                 </button>
+            </div>
+           
+
         </nav>
     </div>
 
     <section>
         <div class="row">
             <div class="col-sm-12">
-                <div class="card shadow container">
+                <div class="card shadow">
                     <div class="card-body py-3">
                         <form id="filterTable" class="row">
                             <div class="col-sm-4">
@@ -58,7 +66,7 @@
             </div>
 
             <div class="col-sm-12">
-                <div class="card shadow container">
+                <div class="card shadow">
                     <div class="card-body py-5 ">
                         <div class="table-responsive">
                             <table id="myTable" class="table display w-100 nowrap">
@@ -94,7 +102,6 @@ $(document).ready(function() {
         processing: true 
     });
     fetchData();
-    reset();
 });
 
 function fetchData() {
@@ -148,9 +155,9 @@ function dataTables(data) {
             {
                 data: 'employee_id',
                 render: function(data, type, row) {
-                    return '<a class="btn mx-1 btn-sm btn-primary" href="<?= base_url('user/employee-view/') ?>' + data + '"><i class="bi bi-eye" style="font-size:12px"></i></a>' +
-                    '<a class="btn mx-1 btn-sm btn-success" href="<?= base_url('user/employee-edit/') ?>' + data + '"><i class="bi bi-pencil-square" style="font-size:12px"></i></a>' +
-                    '<a class="btn btn-sm btn-danger" onclick="deleteData(' + data + ')"><i class="bi bi-trash3-fill" style="font-size:12px"></i></a>';
+                    return '<a class="btn mx-1 btn-sm btn-primary" href="<?= base_url('user/employee-view/') ?>' + data + '"><i class="bi bi-eye" style="font-size:9px"></i></a>' +
+                    '<a class="btn mx-1 btn-sm btn-success" href="<?= base_url('user/employee-edit/') ?>' + data + '"><i class="bi bi-pencil-square" style="font-size:9px"></i></a>' +
+                    '<a class="btn btn-sm btn-danger" onclick="deleteData(' + data + ')"><i class="bi bi-trash3-fill" style="font-size:9px"></i></a>';
                 }
             },
         ],
@@ -172,10 +179,7 @@ function deleteData(id) {
         if (result.isConfirmed) {
             $.ajax({
                 type: 'POST',
-                url: '<?= base_url("user/employee-delete"); ?>',
-                data: {
-                    id: id
-                }, 
+                url: '<?= base_url("user/employee-delete/"); ?>'+ id,
                 success: function(response) {
                     if (response.success) {
                         Swal.fire({

@@ -24,7 +24,7 @@ $routes->post('user/employee-insert', 'EmployeeController::employeeAddInsert');
 $routes->get('user/employee-view/(:num)', 'EmployeeController::employeeView/$1');
 $routes->get('user/employee-edit/(:num)', 'EmployeeController::employeeEditPage/$1');
 $routes->post('user/employee-update/(:num)', 'EmployeeController::employeeUpdate/$1');
-$routes->post('user/employee-delete', 'EmployeeController::employeeDelete/$1');
+$routes->post('user/employee-delete/(:num)', 'EmployeeController::employeeDelete/$1');
 // ------------- end employee ----------------
 
 // ------------- Inventory ----------------
@@ -57,6 +57,10 @@ $routes->post('user/item-category', 'CategoryController::categoryData');
 $routes->post('user/item-category/insert', 'CategoryController::categoryInsert');
 $routes->post('user/item-category/update', 'CategoryController::categoryUpdate');
 // ------------- End Category ----------------
+
+// ------------- Emp Activity Log
+$routes->get('user/employee-activity-log', 'EmployeeActLogController::activity');
+$routes->post('user/employee-activity-log', 'EmployeeActLogController::activityData');
 
 
 

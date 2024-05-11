@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 use App\Models\EmployeeModel;
 use App\Models\UserModel;
+use App\Models\EmployeeActLog;
 
 class EmployeeController extends BaseController
 {
@@ -106,12 +107,6 @@ class EmployeeController extends BaseController
                     'required' => 'The first name field is required.',
                 ]
             ],
-            'middle_name' => [
-                'rules' => 'required',
-                'errors' => [
-                    'required' => 'The middle name field is required.',
-                ]
-            ],
             'surname' => [
                 'rules' => 'required',
                 'errors' => [
@@ -143,10 +138,17 @@ class EmployeeController extends BaseController
                 
                 $picture->move(ROOTPATH . 'public/images', $imageName);
 
+                $first_name = esc($this->request->getPost('first_name'));
+                $middle_name = esc($this->request->getPost('middle_name'));
+                $surname = esc($this->request->getPost('surname'));
+                
+                $fullname = ucwords($first_name.' '. substr($middle_name,0,1).'. '. $surname);
+
+
                 $data = [
-                    'emp_fname' => esc($this->request->getPost('first_name')),
-                    'emp_mname' => esc($this->request->getPost('middle_name')),
-                    'emp_sname' => esc($this->request->getPost('surname')),
+                    'emp_fname' => $first_name,
+                    'emp_mname' => $middle_name,
+                    'emp_sname' => $surname,
                     'emp_address' => esc($this->request->getPost('address')),
                     'created_by' => esc($user_id),
                     'emp_image' =>  esc($imageName), 
@@ -165,6 +167,17 @@ class EmployeeController extends BaseController
                 } else {
                     $insertEmployee = new EmployeeModel();
                     $insertEmployee->insert($data);
+
+                    $emp_id = $insertEmployee->insertID();
+
+                    $log = [
+                        'employee_id' => $emp_id,
+                        'employee_name' => ucwords($fullname),
+                        'created_by' => esc($user_id),
+                    ];
+
+                    $EmployeeActLog = new EmployeeActLog();
+                    $EmployeeActLog->insert($log);
 
                     return $this->response->setJSON(['status' => 'success', 'message' => 'Employee added successfully']);
                 }
@@ -196,8 +209,6 @@ class EmployeeController extends BaseController
         return view('user/employee-view', $data + $userdata);
     }
 
-    
-
     // employee edit page
     public function employeeEditPage($id) {
         $editEmployee = new EmployeeModel();
@@ -222,18 +233,16 @@ class EmployeeController extends BaseController
     // employee update
     public function employeeUpdate($id) {
         $employeeModel = new EmployeeModel();
+
+        $session = session();
+
+        $user_id = $session->get('user_id');
     
         $validationRules = [
             'first_name' => [
                 'rules' => 'required',
                 'errors' => [
                     'required' => 'The first name field is required.',
-                ]
-            ],
-            'middle_name' => [
-                'rules' => 'required',
-                'errors' => [
-                    'required' => 'The middle name field is required.',
                 ]
             ],
             'surname' => [
@@ -251,10 +260,18 @@ class EmployeeController extends BaseController
         ];
 
         if ($this->validate($validationRules)) {
+
+            
+            $first_name = esc($this->request->getPost('first_name'));
+            $middle_name = esc($this->request->getPost('middle_name'));
+            $surname = esc($this->request->getPost('surname'));
+            
+            $fullname = ucwords($first_name.' '. substr($middle_name,0,1).'. '. $surname);
+
             $data = [
-                'emp_fname' => esc($this->request->getPost('first_name')),
-                'emp_mname' => esc($this->request->getPost('middle_name')),
-                'emp_sname' => esc($this->request->getPost('surname')),
+                'emp_fname' => $first_name,
+                'emp_mname' => $middle_name,
+                'emp_sname' => $surname,
                 'emp_address' => esc($this->request->getPost('address')),
             ];
     
@@ -269,6 +286,15 @@ class EmployeeController extends BaseController
             $updated = $employeeModel->set($data)->where('employee_id', $id)->update();
     
             if ($updated) {
+                $log = [
+                    'employee_id' => $id,
+                    'employee_name' => $fullname,
+                    'created_by' => esc($user_id),
+                    'status' => '1',
+                ];
+                $EmployeeActLog = new EmployeeActLog();
+                $EmployeeActLog->insert($log);
+
                 return $this->response->setJSON(['status' => 'success']);
             } else {
                 return $this->response->setJSON(['status' => 'error', 'message' => 'Failed to update employee.']);
@@ -279,19 +305,29 @@ class EmployeeController extends BaseController
     }
 
     // delete
-    public function employeeDelete()
+    public function employeeDelete($id)
     {
-        $employee_id = $this->request->getPost('id');
+        $session = session();
+        $user_id = $session->get('user_id');
 
         $employeeModel = new EmployeeModel();
+        $EmployeeActLog = new EmployeeActLog();
 
-        // Perform deletion
-        $result = $employeeModel->where('employee_id', $employee_id)->delete();
+        $employee = $employeeModel->find($id);
 
+        if ($employee) {
+            $fullname = ucwords($employee['emp_fname'] . ' ' . substr($employee['emp_mname'], 0, 1) . '. ' . $employee['emp_sname']);
+            $log = [
+                'employee_id' => $id,
+                'employee_name' => $fullname,
+                'created_by' => esc($user_id),
+                'status' => '2',
+            ];
+            $EmployeeActLog->insert($log);
+
+            $result = $employeeModel->where('employee_id', $id)->delete();
+        } 
         return $this->response->setJSON(['success' => $result]);
     }
-
-    
-
     
 }

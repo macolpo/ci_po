@@ -3,11 +3,12 @@
 <?php include('navbar.php')?>
 <?php include('aside.php')?>    
 <main id="main" class="main">
-    <div class="pagetitle container">
+    <div class="pagetitle">
         <h1>Add Item</h1>
         <nav class="d-flex justify-content-between">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="<?= base_url('user/') ?>" class="text-info">Home</a></li>
+                <li class="breadcrumb-item"><a href="<?= base_url('user/item-list') ?>">Item</a></li>
                 <li class="breadcrumb-item active">Add Item</li>
             </ol>
 
@@ -24,7 +25,7 @@
     <section>
         <div class="row">
             <div class="col-md-12">
-                <div class="card shadow container">
+                <div class="card shadow">
                     <div class="card-body">
                         <h5 class="card-title fw-bold">Item Information</h5>
                         <form id="itemForm" class="row" enctype="multipart/form-data"> 
