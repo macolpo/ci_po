@@ -1,3 +1,4 @@
+<title>Register</title>
 <?php include('layout/layout-top.php') ?>
 
 
@@ -9,7 +10,6 @@
                     <div class="card-body">
                         <h5 class="card-title text-center fw-bold my-3">REGISTER</h5>
                         <form class="row" id="registerForm">
-                            <?= csrf_field() ?>
                             <div class="col-sm-6 mb-3">
                                 <label for="firstname" class="form-label">Firstname</label>
                                 <input type="text" name="firstname" id="firstname" class="form-control" placeholder="Enter Firstname" />
@@ -90,7 +90,7 @@ $(document).ready(function () {
                     else if (response.status === "validation_error") {
                         $('.text-danger').remove();
                         $.each(response.errors, function(field, errorMessage) {
-                            $('*[name="' + field + '"]').after('<div class="text-danger">' + errorMessage + '</div>');
+                            $('[name="' + field + '"]').after('<div class="text-danger">' + errorMessage + '</div>');
                         });
                     }
                 },

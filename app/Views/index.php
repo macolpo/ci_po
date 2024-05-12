@@ -1,3 +1,4 @@
+<title>Login</title>
 <?php include('layout/layout-top.php') ?>
 
 <section class="py-5">

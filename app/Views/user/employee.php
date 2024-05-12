@@ -94,12 +94,14 @@
 </main>
 <script>
 $(document).ready(function() {
+    
     $('#startdate, #enddate, #user').change(function() {
         fetchData();
     });
 
     $('#myTable').DataTable({
-        processing: true 
+        serverside: true, 
+        processing: true,
     });
     fetchData();
 });

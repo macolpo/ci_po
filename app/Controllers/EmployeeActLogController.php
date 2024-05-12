@@ -20,8 +20,6 @@ class EmployeeActLogController extends BaseController
             'user_id' => $session->get('user_id'),
             'first_name' => $session->get('first_name')
         ];
-
-        //
         return view('user/employee-activity-log', $userdata);
     }
 
@@ -48,6 +46,7 @@ class EmployeeActLogController extends BaseController
             ];
             $data[] = $activityLog;
         }
+        // return $this->response->setJSON(['haha' => $data]);
         return $this->response->setJSON($data);
     }
     

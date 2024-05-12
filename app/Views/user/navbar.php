@@ -1,11 +1,11 @@
 <header id="header" class="header fixed-top d-flex align-items-center">
     <div class="d-flex align-items-center justify-content-between">
         <a href="/" class="logo d-flex align-items-center lh-1">
-            <img src="" class="align-self-start" alt="">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRv06o1exaFgliiUkpbnuCw0WPCj0Mq9wFit40odBM9tZYjeBahAK9uN0I7JWh8Ws8_dw&usqp=CAU" class="align-self-start" alt="">
             <div class="ms-2 d-none d-lg-block fs-6 text-uppercase text-logo">
-              
+                
                 <span class="fs-6">
-                    LOGOO
+                    <!-- LOGO HERE -->
                 </span>
             </div>
         </a>

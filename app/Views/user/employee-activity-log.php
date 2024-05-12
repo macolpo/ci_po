@@ -4,7 +4,7 @@
 <?php include('aside.php')?>
 
 <main id="main" class="main">
-    <div class="pagetitle container">
+    <div class="pagetitle">
         <h1>View Employee Activity Log</h1>
         <nav class="d-flex justify-content-between">
             <ol class="breadcrumb">
@@ -18,7 +18,7 @@
     <section>
         <div class="row">
             <div class="col-sm-12">
-                <div class="card shadow container">
+                <div class="card shadow">
                     <div class="card-body py-5 ">
                         <div class="table-responsive">
                             <table id="myTable" class="table display w-100 nowrap">
@@ -51,7 +51,7 @@ function fetchData() {
         ajax: {
             url: '<?= base_url('user/employee-activity-log') ?>',
             type: 'POST',
-            dataSrc: ''
+            dataSrc: '', 
         },
         columns: [
             { data: 'employee_id' },

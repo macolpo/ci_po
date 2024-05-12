@@ -81,9 +81,9 @@
         <div class="modal-body">
             <label for="editCategory">Category Name</label>
             <input type="text" class="form-control" id="editCategory" name="editCategory">
-            <input type="hidden" class="form-control" id="categoryId" name="categoryId">
         </div>
         <div class="modal-footer">
+            <input type="hidden" class="form-control" id="categoryId" name="categoryId">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="$('.text-danger').remove();">Close</button>
             <button type="submit" class="btn btn-primary">Update</button>
         </div>
