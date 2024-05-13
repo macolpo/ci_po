@@ -17,6 +17,42 @@
 
     <section>
         <div class="row">
+        <div class="col-sm-12">
+                <div class="card shadow">
+                    <div class="card-body py-3">
+                        <form id="filterTable" class="row">
+                            <div class="col-sm-4">
+                                <label>Start Date</label>
+                                <input type="date" name="startdate" id="startdate" class="form-control">
+                            </div>
+                            <div class="col-sm-4">
+                                <label>End Date</label>
+                                <input type="date" name="enddate" id="enddate" class="form-control">
+                            </div>
+                            <div class="col-sm-3">
+                                <label>Action By</label>
+                                <select name="user" id="user" class="form-select">
+                                    <option value="" selected>All</option>
+                                    <?php if (!empty($user)) : ?>
+                                        <?php foreach ($user as $user) : ?>
+                                            <option value="<?= $user['user_id']; ?>"><?= $user['first_name']; ?></option>
+                                        <?php endforeach; ?>
+                                    <?php else : ?>
+                                        <option value="" selected disabled>No user found</option>
+                                    <?php endif; ?>
+                                </select>
+                            </div>
+                            <div class="col-sm-1 mt-4">
+                                <button class="btn bg-success-subtle py-2" type="button" id="reload">
+                                    <i class="bi bi-arrow-clockwise"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
             <div class="col-sm-12">
                 <div class="card shadow">
                     <div class="card-body py-5 ">
@@ -45,46 +81,70 @@
 </main>
 <?php include('layout/layout-bottom.php') ?>
 <script>
-function fetchData() {
+$(document).ready(function() {
+    $('#startdate, #enddate, #user').change(function() {
+        fetchData();
+    });
     $('#myTable').DataTable({
-        processing: true, 
-
-        ajax: {
-            url: '<?= base_url('user/employee-activity-log') ?>',
-            type: 'POST',
-            dataSrc: '', 
-        },
-        columns: [
-            { 
-                data: null, 
-                render: function(data, type, row, meta) {
-                    return meta.row + 1; 
-                }
-            },
-            { data: 'employee_id' },
-            { data: 'employee_name' },
-            {
-                data: 'status',
-                render: function(data, type, row) {
-                    if (data === null) {
-                        return 'Unknown';
-                    } else if (data === '0') {
-                        return 'Added';
-                    } else if (data === '1') {
-                        return 'Updated';
-                    } else {
-                        return 'Deleted';
-                    }
-                }
-            },
-            { data: 'created_by' },
-            { data: 'created_at' },
-        ],
+        processing: true,
+    });
+    $('#reload').click(function () { 
+        $('#filterTable')[0].reset();
+        fetchData();
     });
 
-}
-
-$(document).ready(function() {
     fetchData();
 });
+
+function fetchData() {
+    let formData = new FormData(document.getElementById('filterTable'));
+
+    $('#myTable').DataTable().processing(true);
+
+    $.ajax({
+        url: '<?= base_url('user/employee-activity-log') ?>',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            $('#myTable').DataTable().clear().destroy();
+            $('#myTable').DataTable({
+                processing: true, 
+                data: response,
+                columns: [
+                    { 
+                        data: null, 
+                        render: function(data, type, row, meta) {
+                            return meta.row + 1; 
+                        }
+                    },
+                    { data: 'employee_id' },
+                    { data: 'employee_name' },
+                    {
+                        data: 'status',
+                        render: function(data, type, row) {
+                            if (data === null) {
+                                return 'Unknown';
+                            } else if (data === '0') {
+                                return 'Added';
+                            } else if (data === '1') {
+                                return 'Updated';
+                            } else {
+                                return 'Deleted';
+                            }
+                        }
+                    },
+                    { data: 'created_by' },
+                    { data: 'created_at' },
+                ]
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error(status + ': ' + error);
+        }
+    });
+}
+
+
 </script>

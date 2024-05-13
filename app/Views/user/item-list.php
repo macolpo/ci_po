@@ -81,7 +81,7 @@ $(document).ready(function() {
     });
 
     $('#myTable').DataTable({
-        processing: true
+        processing: true,
     });
     fetchData();
 });
@@ -98,65 +98,54 @@ function fetchData() {
         processData: false,
         contentType: false,
         success: function(response) {
-            console.log(response)
-            dataTables(response);
+            $('#myTable').DataTable().clear().destroy();
+            $('#myTable').DataTable({
+                processing: true,
+                layout: {
+                    top: {
+                        buttons: [ 'copy', 'csv', 'excel', 'pdf', 'print', ]
+                    }
+                },
+                data: response,
+                columns: [
+                    { 
+                        data: null, 
+                        render: function(data, type, row, meta) {
+                            return meta.row + 1; 
+                        }
+                    },
+                    { data: 'inventory_name' },
+                    { data: 'category_name' },
+                    { data: 'inventory_sn' },
+                    {
+                        data: 'inventory_pn',
+                        render: function(data, type, row) {
+                            return data ? data : 'No item';
+                        }
+                    },
+                    {
+                        data: 'status',
+                        render: function(data, type, row) {
+                            if (data === '1') {
+                                return '<span class="bg-warning-subtle p-1 rounded-3 text-warning">Not Available</span>';
+                            } else {
+                                return '<span class="bg-success-subtle p-1 rounded-3 text-success">Available</span>';
+                            }
+                        }
+                    },           
+                    {
+                        data: 'inventory_id',   
+                        render: function(data, type, row) {
+                            return '<a class="btn mx-1 btn-sm btn-success" href="<?= base_url('user/item-edit/') ?>' + data + '"><i class="bi bi-pencil-square" style="font-size:9px"></i></a>' +
+                            '<a class="btn btn-sm btn-danger" onclick="deleteData(' + data + ')"><i class="bi bi-trash3-fill" style="font-size:9px"></i></a>';
+                        }
+                    },
+                ],
+            });
         },
         error: function(xhr, status, error) {
             console.error(status + ': ' + error);
         }
-    });
-}
-
-function dataTables(info) {
-    $('#myTable').DataTable().clear().destroy();
-    $('#myTable').DataTable({
-        processing: true,
-        layout: {
-            top: {
-                buttons: [
-                    'copy',
-                    'csv',
-                    'excel',
-                    'pdf',
-                    'print',
-                ]
-            }
-        },
-        data: info,
-        columns: [
-            { 
-                data: null, 
-                render: function(data, type, row, meta) {
-                    return meta.row + 1; 
-                }
-            },
-            { data: 'inventory_name' },
-            { data: 'category_name' },
-            { data: 'inventory_sn' },
-            {
-                data: 'inventory_pn',
-                render: function(data, type, row) {
-                    return data ? data : 'No item';
-                }
-            },
-            {
-                data: 'status',
-                render: function(data, type, row) {
-                    if (data === '1') {
-                        return '<span class="bg-warning-subtle p-1 rounded-3 text-warning">Not Available</span>';
-                    } else {
-                        return '<span class="bg-success-subtle p-1 rounded-3 text-success">Available</span>';
-                    }
-                }
-            },           
-            {
-                data: 'inventory_id',   
-                render: function(data, type, row) {
-                    return '<a class="btn mx-1 btn-sm btn-success" href="<?= base_url('user/item-edit/') ?>' + data + '"><i class="bi bi-pencil-square" style="font-size:9px"></i></a>' +
-                    '<a class="btn btn-sm btn-danger" onclick="deleteData(' + data + ')"><i class="bi bi-trash3-fill" style="font-size:9px"></i></a>';
-                }
-            },
-        ],
     });
 }
 

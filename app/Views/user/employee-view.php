@@ -1,4 +1,4 @@
-<title>Dashboard - Edit Employee</title>
+<title>View Employee</title>
 <?php include('layout/layout-top.php') ?>
 <?php include('navbar.php')?>
 <?php include('aside.php')?>
@@ -34,12 +34,12 @@
                 <div class="col-sm-12">
                     <div id="printableArea">
                         <div class="card shadow px-4 py-2">
-                            <div class="card-title fw-bold">
+                            <div class="card-header text-primary-emphasis fw-bold">
                                 Employee Information
                             </div>
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <img src="<?= base_url('images/' . $employee['emp_image']) ?>" class="img-fluid img-thumbnail w-100"  alt="Employee Image">
+                            <div class="row p-3">
+                                <div class="col-sm-4 d-flex justify-content-center">
+                                    <img src="<?= base_url('images/' . $employee['emp_image']) ?>" class="img-fluid img-thumbnail w-75 rounded-circle"  alt="Employee Image">
                                 </div>
                                 <div class="col-sm-8">
                                      <div>

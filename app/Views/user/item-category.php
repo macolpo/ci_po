@@ -96,7 +96,6 @@
 function fetchData() {
     $('#myTable').DataTable({
         processing: true, 
-
         ajax: {
             url: '<?= base_url('user/item-category') ?>',
             type: 'POST',

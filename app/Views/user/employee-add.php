@@ -150,19 +150,18 @@ $('#picture').on('change', function(e) {
     }
 });
 
-// validateImageType(document.getElementById('picture'));
-// // Function to display SweetAlert2 error message
-// function validateImageType(input) {
-//     input.addEventListener('change', function() {
-//         const file = this.files[0];
-//         if (file && !['image/jpeg', 'image/png'].includes(file.type)) {
-//             Swal.fire({
-//                 icon: 'warning',
-//                 title: 'File Type Error',
-//                 text: 'Please select a JPEG or PNG file',
-//             });
-//             this.value = '';
-//         }
-//     });
-// }
+validateImageType(document.getElementById('picture'));
+function validateImageType(input) {
+    input.addEventListener('change', function() {
+        const file = this.files[0];
+        if (file && !file.type.startsWith('image/')) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'File Type Error',
+                text: 'Please select a JPEG or PNG file',
+            });
+            this.value = '';
+        }
+    });
+}
 </script>

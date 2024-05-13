@@ -43,7 +43,7 @@
                                 <input type="date" name="enddate" id="enddate" class="form-control">
                             </div>
                             <div class="col-sm-3">
-                                <label>Created By</label>
+                                <label>Action By</label>
                                 <select name="user" id="user" class="form-select">
                                     <option value="" selected>All</option>
                                     <?php if (!empty($user)) : ?>
@@ -56,7 +56,7 @@
                                 </select>
                             </div>
                             <div class="col-sm-1 mt-4">
-                                <button class="btn bg-success-subtle py-2" type="button" onclick="location.reload()">
+                                <button class="btn bg-success-subtle py-2" type="button" id="reload">
                                     <i class="bi bi-arrow-clockwise"></i>
                                 </button>
                             </div>
@@ -95,7 +95,6 @@
 </main>
 <script>
 $(document).ready(function() {
-    
     $('#startdate, #enddate, #user').change(function() {
         fetchData();
     });
@@ -104,12 +103,15 @@ $(document).ready(function() {
         serverside: true, 
         processing: true,
     });
+    $('#reload').click(function () { 
+        $('#filterTable')[0].reset();
+        fetchData();
+    });
     fetchData();
 });
 
 function fetchData() {
     $('#myTable').DataTable().processing(true);
-
     let formData = new FormData(document.getElementById('filterTable'));
     $.ajax({
         type: 'POST',
@@ -118,7 +120,43 @@ function fetchData() {
         processData: false,
         contentType: false,
         success: function(response) {
-            dataTables(response);
+            $('#myTable').DataTable().clear().destroy();
+            $('#myTable').DataTable({
+                processing: true,
+                layout: {
+                top: {
+                    buttons: [ 'copy', 'csv', 'excel', 'pdf', 'print',]
+                }
+                },
+                data: response,
+                columns: [
+                    { 
+                        data: null, 
+                        render: function(data, type, row, meta) {
+                            return meta.row + 1; 
+                        }
+                    },
+                    { data: 'employee_id' },
+                    { data: 'name' },
+                    { data: 'emp_address' },
+                    {
+                        data: 'inventory_name',
+                        render: function(data, type, row) {
+                            return data ? data : 'No item';
+                        }
+                    },
+                    { data: 'date_join' },
+                    { data: 'created_by' },
+                    {
+                        data: 'employee_id',
+                        render: function(data, type, row) {
+                            return '<a class="btn mx-1 btn-sm btn-primary" href="<?= base_url('user/employee-view/') ?>' + data + '"><i class="bi bi-eye" style="font-size:9px"></i></a>' +
+                            '<a class="btn mx-1 btn-sm btn-success" href="<?= base_url('user/employee-edit/') ?>' + data + '"><i class="bi bi-pencil-square" style="font-size:9px"></i></a>' +
+                            '<a class="btn btn-sm btn-danger" onclick="deleteData(' + data + ')"><i class="bi bi-trash3-fill" style="font-size:9px"></i></a>';
+                        }
+                    },
+                ],
+            });
         },
         error: function(xhr, status, error) {
             console.error(status + ': ' + error);
@@ -126,53 +164,6 @@ function fetchData() {
     });
 
 }
-
-function dataTables(data) {
-    $('#myTable').DataTable().clear().destroy();
-    $('#myTable').DataTable({
-        processing: true,
-        layout: {
-        top: {
-            buttons: [
-                'copy',
-                'csv',
-                'excel',
-                'pdf',
-                'print',
-            ]
-        }
-        },
-        data: data,
-        columns: [
-            { 
-                data: null, 
-                render: function(data, type, row, meta) {
-                    return meta.row + 1; 
-                }
-            },
-            { data: 'employee_id' },
-            { data: 'name' },
-            { data: 'emp_address' },
-            {
-                data: 'inventory_name',
-                render: function(data, type, row) {
-                    return data ? data : 'No item';
-                }
-            },
-            { data: 'date_join' },
-            { data: 'created_by' },
-            {
-                data: 'employee_id',
-                render: function(data, type, row) {
-                    return '<a class="btn mx-1 btn-sm btn-primary" href="<?= base_url('user/employee-view/') ?>' + data + '"><i class="bi bi-eye" style="font-size:9px"></i></a>' +
-                    '<a class="btn mx-1 btn-sm btn-success" href="<?= base_url('user/employee-edit/') ?>' + data + '"><i class="bi bi-pencil-square" style="font-size:9px"></i></a>' +
-                    '<a class="btn btn-sm btn-danger" onclick="deleteData(' + data + ')"><i class="bi bi-trash3-fill" style="font-size:9px"></i></a>';
-                }
-            },
-        ],
-    });
-}
-
 
 function deleteData(id) {
     Swal.fire({
