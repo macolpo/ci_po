@@ -33,13 +33,15 @@
             <div class="container">
                 <div class="col-sm-12">
                     <div id="printableArea">
-                        <div class="card shadow px-4 py-2">
+                        <div class="card shadow px-4 py-2"> 
                             <div class="card-header text-primary-emphasis fw-bold">
                                 Employee Information
                             </div>
                             <div class="row p-3">
-                                <div class="col-sm-4 d-flex justify-content-center">
-                                    <img src="<?= base_url('images/' . $employee['emp_image']) ?>" class="img-fluid img-thumbnail w-75 rounded-circle"  alt="Employee Image">
+                                <div class="col-sm-4">
+                                    <a type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                        <img src="<?= base_url('images/' . $employee['emp_image']) ?>" class="img-fluid img-thumbnail w-100"  alt="Employee Image">
+                                    </a>
                                 </div>
                                 <div class="col-sm-8">
                                      <div>
@@ -68,6 +70,13 @@
 </main>
 <?php include('layout/layout-bottom.php') ?>
 
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content">
+        <img src="<?= base_url('images/' . $employee['emp_image']) ?>"></img>
+    </div>
+  </div>
+</div>
 <script>
 $(document).ready(function () {
     $('#employeeFormEdit').submit(function(e) {

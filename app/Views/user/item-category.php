@@ -115,8 +115,7 @@ function fetchData() {
                     return `
                     <a class="btn btn-sm btn-success" id="editBtn" data-id="`+ data +`" data-category="` + row.category_name + `">
                         <i class="bi bi-pencil-fill" style="font-size:9px"></i>
-                    </a>`
-;
+                    </a>`;
                 }
             },
         ],
@@ -137,7 +136,6 @@ $(document).ready(function() {
             processData: false, 
             contentType: false, 
             success: function(response) {
-                console.log(response)
                 if (response.status === "success") {
                     Swal.fire({
                         icon: 'success',

@@ -18,6 +18,7 @@
     <section>
         <div class="row">
             <form id="employeeForm" class="row" enctype="multipart/form-data"> 
+                <?= csrf_field() ?>
                 <div class="col-md-8">
                     <div class="card shadow px-3 py-1">
                         <div class="card-body row">
@@ -68,7 +69,10 @@
                         onclick="window.location.href = '<?= base_url('user/employee') ?>' ">
                         Back
                     </button>
-                    <button type="submit" class="btn btn-info fw-semi">Submit</button>
+                    <button type="submit" class="btn btn-info fw-semi">
+                        Submit 
+                        <div class="spinner-border spinner-border-sm d-none" role="status"></div>
+                    </button>
                 </div>
             </form>
         </div>
@@ -81,6 +85,7 @@ $(document).ready(function () {
     $('#employeeForm').submit(function(e) {
         e.preventDefault();
         var formData = new FormData(this); 
+        $('.spinner-border').removeClass('d-none');
 
             $.ajax({
                 url: '<?= base_url('user/employee-insert') ?>',
@@ -99,6 +104,7 @@ $(document).ready(function () {
                             }).then((result) => {
                                 window.location.href = '<?= base_url('user/employee') ?>';
                             });
+                            $('.spinner-border').addClass('d-none');
                         }
                     else if (response.status === "error") {
                         Swal.fire({
@@ -109,6 +115,7 @@ $(document).ready(function () {
                     }
                     else if (response.status === "validation_error") {
                         $('.text-danger').remove();
+                        $('.spinner-border').addClass('d-none');
                         $.each(response.errors, function(field, errorMessage) {
                             $('[name="' + field + '"]').after('<div class="text-danger">' + errorMessage + '</div>');
                         });
@@ -150,18 +157,18 @@ $('#picture').on('change', function(e) {
     }
 });
 
-validateImageType(document.getElementById('picture'));
-function validateImageType(input) {
-    input.addEventListener('change', function() {
-        const file = this.files[0];
-        if (file && !file.type.startsWith('image/')) {
-            Swal.fire({
-                icon: 'warning',
-                title: 'File Type Error',
-                text: 'Please select a JPEG or PNG file',
-            });
-            this.value = '';
-        }
-    });
-}
+// validateImageType(document.getElementById('picture'));
+// function validateImageType(input) {
+//     input.addEventListener('change', function() {
+//         const file = this.files[0];
+//         if (file && !file.type.startsWith('image/')) {
+//             Swal.fire({
+//                 icon: 'warning',
+//                 title: 'File Type Error',
+//                 text: 'Please select a JPEG or PNG file',
+//             });
+//             this.value = '';
+//         }
+//     });
+// }
 </script>

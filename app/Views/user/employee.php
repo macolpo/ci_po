@@ -23,7 +23,6 @@
                     <i class="bi bi-plus"></i>
                 </button>
             </div>
-           
 
         </nav>
     </div>
@@ -45,8 +44,8 @@
                             <div class="col-sm-3">
                                 <label>Action By</label>
                                 <select name="user" id="user" class="form-select">
-                                    <option value="" selected>All</option>
                                     <?php if (!empty($user)) : ?>
+                                        <option value="" selected>All</option>
                                         <?php foreach ($user as $user) : ?>
                                             <option value="<?= $user['user_id']; ?>"><?= $user['first_name']; ?></option>
                                         <?php endforeach; ?>

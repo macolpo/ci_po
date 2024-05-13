@@ -36,8 +36,8 @@
                             <div class="col-sm-6 align-items-center">
                                 <label>Select Category</label>
                                     <select name="category" id="category" class="form-select">
-                                        <option value="" selected>Select Category</option>
                                         <?php if (!empty($categories)) : ?>
+                                            <option value="" selected>Select Category</option>
                                             <?php foreach ($categories as $category) : ?>
                                                 <option value="<?= $category['category_id']; ?>"><?= $category['category_name']; ?></option>
                                             <?php endforeach; ?>
@@ -59,7 +59,10 @@
                                     onclick="window.location.href = '<?= base_url('user/item-list') ?>' ">
                                     Back
                                 </button>
-                                <button type="submit" class="btn btn-info fw-semi">Submit</button>
+                                <button type="submit" class="btn btn-info fw-semi">
+                                    Submit 
+                                    <div class="spinner-border spinner-border-sm d-none" role="status"></div>
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -76,7 +79,8 @@ $(document).ready(function () {
     $('#itemForm').submit(function(e) {
         e.preventDefault();
         var formData = new FormData(this); 
-        
+        $('.spinner-border').removeClass('d-none');
+
         $.ajax({
             url: '<?= base_url('user/item-add') ?>',
             method: 'POST',
@@ -94,14 +98,17 @@ $(document).ready(function () {
                         }).then((result) => {
                             window.location.href = '<?= base_url('user/item-list') ?>';
                         });
-                    } else if (response.status === "error") {
-                        Swal.fire({
-                            icon: 'warning',
-                            title: 'Oops!',
-                            text: 'Item already exist!',
-                        })
-                    } else if (response.status === "validation_error") {
+                        $('.spinner-border').addClass('d-none');
+                    } 
+                else if (response.status === "error") {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Oops!',
+                        text: 'Item already exist!',
+                    })
+                } else if (response.status === "validation_error") {
                         $('.text-danger').remove();
+                        $('.spinner-border').addClass('d-none');
                         $.each(response.errors, function(field, errorMessage) {
                         $('[name="' + field + '"]').after('<div class="text-danger">' + errorMessage + '</div>');
                     });

@@ -56,8 +56,6 @@
                                     <img src="<?= base_url('images/' . $employee['emp_image']) ?>" class="img-thumbnail img-fluid w-100" alt="Employee Image">
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
                 </div>
@@ -120,22 +118,34 @@ $('#picture').on('change', function(e) {
     for (var i = 0; i < files.length; i++) {
         var file = files[i];
 
-        // Check if the file is an image
         if (file.type.match('image.*')) {
             var reader = new FileReader();
 
             reader.onload = function(e) {
                 var imgSrc = e.target.result;
 
-                // Create image element and add to col-sm-4
                 var imgElement = $('<div class="col-lg-12"><img src="' + imgSrc +
                     '" class="img-thumbnail img-fluid w-100" alt="Preview"></div>');
                 $('#img-preview').append(imgElement);
             };
 
-            // Read the image file as a data URL
             reader.readAsDataURL(file);
         }
     }
 });
+// image
+validateImageType(document.getElementById('picture'));
+function validateImageType(input) {
+    input.addEventListener('change', function() {
+        const file = this.files[0];
+        if (file && !file.type.startsWith('image/')) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'File Type Error',
+                text: 'Please select a JPEG or PNG file',
+            });
+            this.value = '';
+        }
+    });
+}
 </script>

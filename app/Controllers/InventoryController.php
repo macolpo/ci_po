@@ -176,10 +176,10 @@ class InventoryController extends BaseController
 
         if ($this->validate($validationRules)) {
             $data = [
-                'inventory_name' => $this->request->getPost('inventory_name'), // No need to escape here
-                'category_id' => $this->request->getPost('category'), // No need to escape here
-                'inventory_pn' => $this->request->getPost('product_no'), // No need to escape here
-                'inventory_sn' => $this->request->getPost('serial_no'), // No need to escape here
+                'inventory_name' => $this->request->getPost('inventory_name'),
+                'category_id' => $this->request->getPost('category'),
+                'inventory_pn' => $this->request->getPost('product_no'),
+                'inventory_sn' => $this->request->getPost('serial_no'),
             ];
             $updated = $inventoryModel->set($data)->where('inventory_id', $id)->update();
             if ($updated) {
