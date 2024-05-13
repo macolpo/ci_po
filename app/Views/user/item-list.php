@@ -54,7 +54,7 @@
                             <table id="myTable" class="table display w-100 nowrap">
                                 <thead>
                                     <tr>
-                                        <th scope="col">INVENTORY ID</th>
+                                        <th scope="col">NO.</th>
                                         <th scope="col">ITEM NAME</th>
                                         <th scope="col">CATEGORY</th>
                                         <th scope="col">SERIAL NO.</th>
@@ -124,7 +124,12 @@ function dataTables(info) {
         },
         data: info,
         columns: [
-            { data: 'inventory_id' },
+            { 
+                data: null, 
+                render: function(data, type, row, meta) {
+                    return meta.row + 1; 
+                }
+            },
             { data: 'inventory_name' },
             { data: 'category_name' },
             { data: 'inventory_sn' },

@@ -1,4 +1,4 @@
-<title>Item List</title>
+<title>Assign Item</title>
 <?php include('layout/layout-top.php') ?>
 <?php include('navbar.php')?>
 <?php include('aside.php')?>
@@ -23,7 +23,7 @@
                             <table id="myTable" class="table display w-100 nowrap">
                                 <thead>
                                     <tr>
-                                        <th scope="col">INVENTORY ID</th>
+                                        <th scope="col">NO.</th>
                                         <th scope="col">ITEM NAME</th>
                                         <th scope="col">SERIAL NO.</th>
                                         <th scope="col">PRODUCT NO</th>
@@ -55,8 +55,7 @@
         <form id="assignForm">
             <div class="modal-body">
                 <div class="mb-3">
-                    <span>ITEM ID:</span>
-                    <span id="itemId"></span>
+                    <input type="hidden" id="itemId">
                 </div>
                 <div class="mb-3">
                     <span>ITEM NAME:</span>
@@ -88,7 +87,12 @@ function fetchData() {
             dataSrc: ''
         },
         columns: [
-            { data: 'inventory_id' },
+            { 
+                data: null, 
+                render: function(data, type, row, meta) {
+                    return meta.row + 1; 
+                }
+            },
             { data: 'inventory_name' },
             { data: 'inventory_sn' },
             { data: 'inventory_pn' },
@@ -180,13 +184,11 @@ $(document).ready(function() {
     $(document).on("click", "#assignModal", function() {
         var modalAssign = new bootstrap.Modal(document.getElementById('modalAssign'));
 
-        var itemIdVal = $(this).data("id");
-
         var itemId = $(this).data("id");
         var item = $(this).data("item");
 
 
-        $("#itemId").text(itemId);
+        $("#itemId").val(itemId);
         $("#item-name").text(item);
 
         $.ajax({
@@ -214,7 +216,7 @@ $(document).ready(function() {
     $('#assignForm').submit(function(e) {
         e.preventDefault();
         var formData = new FormData(this);
-        var itemIdVal = $('#itemId').text(); 
+        var itemIdVal = $('#itemId').val(); 
 
         $.ajax({
             url: '<?= base_url("user/assign-item/") ?>' + itemIdVal,

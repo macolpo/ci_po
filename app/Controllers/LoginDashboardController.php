@@ -38,7 +38,7 @@ class LoginDashboardController extends BaseController
             } else {
                 // Invalid password
                 $session->setFlashdata('msg', 'Invalid email or password.');
-                return redirect()->to('/');
+                return redirect()->to('/')->withInput();
             }
         } else {
             // User not found

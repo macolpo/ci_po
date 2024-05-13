@@ -24,6 +24,7 @@
                             <table id="myTable" class="table display w-100 nowrap">
                                 <thead>
                                     <tr>
+                                        <th scope="col">NO.</th>
                                         <th scope="col">EMPLOYEE ID</th>
                                         <th scope="col">EMPLOYEE NAME</th>
                                         <th scope="col">STATUS</th>
@@ -54,6 +55,12 @@ function fetchData() {
             dataSrc: '', 
         },
         columns: [
+            { 
+                data: null, 
+                render: function(data, type, row, meta) {
+                    return meta.row + 1; 
+                }
+            },
             { data: 'employee_id' },
             { data: 'employee_name' },
             {

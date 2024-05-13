@@ -30,7 +30,7 @@
                             <table id="myTable" class="table display w-100 nowrap">
                                 <thead>
                                     <tr>
-                                        <th scope="col">CATEGORY ID</th>
+                                        <th scope="col">NO.</th>
                                         <th scope="col">CATEGORY NAME</th>
                                         <th scope="col">ACTION</th>
                                     </tr>
@@ -103,7 +103,12 @@ function fetchData() {
             dataSrc: ''
         },
         columns: [
-            { data: 'category_id' },
+            { 
+                data: null, 
+                render: function(data, type, row, meta) {
+                    return meta.row + 1; 
+                }
+            },
             { data: 'category_name' },
             {
                 data: 'category_id',

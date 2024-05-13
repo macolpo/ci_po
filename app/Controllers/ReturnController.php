@@ -49,9 +49,7 @@ class ReturnController extends BaseController
             ->from('inventory_tbl AS i')
             ->join('category_tbl AS c', 'c.category_id = i.category_id', 'left')
             ->join('employee_tbl AS e', 'e.inventory_id = i.inventory_id', 'left') 
-            ->where('i.status', 1); 
-        
-        $builder->groupBy('i.inventory_id'); 
+            ->where('i.status', 1)->groupBy('i.inventory_id'); 
         
         $return = $builder->findAll(); 
         

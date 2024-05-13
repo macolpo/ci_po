@@ -1,4 +1,4 @@
-<title>Item List</title>
+<title>Return Item</title>
 <?php include('layout/layout-top.php') ?>
 <?php include('navbar.php')?>
 <?php include('aside.php')?>
@@ -23,7 +23,7 @@
                             <table id="myTable" class="table display w-100 nowrap">
                                 <thead>
                                     <tr>
-                                        <th scope="col">INVENTORY ID</th>
+                                        <th scope="col">NO.</th>
                                         <th scope="col">ITEM NAME</th>
                                         <th scope="col">SERIAL NO.</th>
                                         <th scope="col">PRODUCT NO</th>
@@ -55,8 +55,7 @@
         <form id="returnForm">
             <div class="modal-body">
                 <div class="mb-3">
-                    <span>Item ID:</span>
-                    <span id="itemId"></span>
+                    <input type="hidden" id="itemId">
                 </div>
                 <div class="mb-3">
                     <span>Item Name:</span>
@@ -87,7 +86,12 @@ function fetchData() {
             dataSrc: ''
         },
         columns: [
-            { data: 'inventory_id' },
+            { 
+                data: null, 
+                render: function(data, type, row, meta) {
+                    return meta.row + 1; 
+                }
+            },
             { data: 'inventory_name' },
             { data: 'inventory_sn' },
             { data: 'inventory_pn' },
@@ -172,7 +176,7 @@ $(document).ready(function() {
     fetchData();
 
     $(document).on("click", "#returnModal", function() {
-        var modalReturn = new bootstrap.Modal(document.getElementById('modalReturn'));
+        $('#modalReturn').modal('show');
 
         var itemIdVal = $(this).data("id");
 
@@ -182,17 +186,16 @@ $(document).ready(function() {
         var employeeId = $(this).data("employeeid");
 
 
-        $("#itemId").text(itemId);
+        $("#itemId").val(itemId);
         $("#itemname").text(item);
         $("#employeeName").text(employeeName);
         $("#employeeId").val(employeeId);
-        modalReturn.show();
     });
 
     $('#returnForm').submit(function (e) { 
             e.preventDefault();
             var formData = new FormData(this); 
-            var itemIdVal = $('#itemId').text(); 
+            var itemIdVal = $('#itemId').val(); 
 
             $.ajax({
                 url: '<?= base_url("user/return-item/") ?>'+ itemIdVal,

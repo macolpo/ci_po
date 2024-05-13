@@ -46,10 +46,10 @@ class AssignController extends BaseController
         $builder = $model->select('i.inventory_id, i.inventory_name, i.inventory_sn, i.inventory_pn, i.status, c.category_name')
             ->from('inventory_tbl AS i')
             ->join('category_tbl AS c', 'c.category_id = i.category_id', 'left')
-            ->where('i.status = 0'); 
-
-        $builder->groupBy('i.inventory_id'); 
-
+            ->where('i.status = 0')
+            ->groupBy('i.inventory_id')
+            ->orderBy('i.created_at', 'ASC'); 
+    
         $assign = $builder->findAll(); 
 
         $data = [];
