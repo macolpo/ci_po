@@ -1,7 +1,7 @@
 <title>Employee Activity Log</title>
-<?php include('layout/layout-top.php') ?>
-<?php include('navbar.php')?>
-<?php include('aside.php')?>
+<?= $this->include('user/layout/layout-top.php') ?>
+<?= $this->include('user/navbar') ?>
+<?= $this->include('user/aside') ?>
 
 <main id="main" class="main">
     <div class="pagetitle">
@@ -79,7 +79,8 @@
         </div>
     </section>
 </main>
-<?php include('layout/layout-bottom.php') ?>
+<?= $this->include('user/layout/layout-bottom.php') ?>
+
 <script>
 $(document).ready(function() {
     $('#startdate, #enddate, #user').change(function() {

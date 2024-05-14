@@ -1,7 +1,7 @@
 <title>Add Item</title>
-<?php include('layout/layout-top.php') ?>
-<?php include('navbar.php')?>
-<?php include('aside.php')?>    
+<?= $this->include('user/layout/layout-top.php') ?>
+<?= $this->include('user/navbar') ?>
+<?= $this->include('user/aside') ?>   
 <main id="main" class="main">
     <div class="pagetitle">
         <h1>Add Item</h1>
@@ -12,13 +12,6 @@
                 <li class="breadcrumb-item active">Add Item</li>
             </ol>
 
-            <div class="buttons">
-                <button type="button" class="btn btn-info text-light p-0 align-items-center"
-                    style="width: 30px; height: 30px;"
-                    onclick="window.location.href = '<?= base_url('user/item-add') ?>' ">
-                    <i class="bi bi-plus"></i>
-                </button>
-            </div>
         </nav>
     </div>
 
@@ -72,7 +65,7 @@
         </div>
     </section>
 </main>
-<?php include('layout/layout-bottom.php') ?>
+<?= $this->include('user/layout/layout-bottom.php') ?>
 
 <script>
 $(document).ready(function () {

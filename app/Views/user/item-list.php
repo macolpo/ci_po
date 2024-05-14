@@ -1,7 +1,7 @@
 <title>Item List</title>
-<?php include('layout/layout-top.php') ?>
-<?php include('navbar.php')?>
-<?php include('aside.php')?>
+<?= $this->include('user/layout/layout-top.php') ?>
+<?= $this->include('user/navbar') ?>
+<?= $this->include('user/aside') ?>
 
 <main id="main" class="main">
     <div class="pagetitle">
@@ -74,6 +74,8 @@
         </div>
     </section>
 </main>
+<?= $this->include('user/layout/layout-bottom.php') ?>
+
 <script>
 $(document).ready(function() {
     $('#category').change(function() {
@@ -191,4 +193,3 @@ function deleteData(id) {
 
 </script>
 
-<?php include('layout/layout-bottom.php') ?>

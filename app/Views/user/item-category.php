@@ -1,7 +1,7 @@
 <title>Category</title>
-<?php include('layout/layout-top.php') ?>
-<?php include('navbar.php')?>
-<?php include('aside.php')?>
+<?= $this->include('user/layout/layout-top.php') ?>
+<?= $this->include('user/navbar') ?>
+<?= $this->include('user/aside') ?>
 
 <main id="main" class="main">
     <div class="pagetitle">
@@ -46,7 +46,8 @@
         </div>
     </section>
 </main>
-<?php include('layout/layout-bottom.php') ?>
+<?= $this->include('user/layout/layout-bottom.php') ?>
+
 <!-- modal -->
 <div class="modal fade" id="addModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -142,7 +143,7 @@ $(document).ready(function() {
                         title: 'Success!',
                         text: 'Category inserted successfully!',
                         showConfirmButton: false,
-                        timer: 3000,
+                        timer: 2000,
                     })
                     $('#addModal').modal('hide');
                     $('#categoryForm')[0].reset();
@@ -201,19 +202,11 @@ $(document).ready(function() {
                         title: 'Success!',
                         text: 'Category updated successfully!',
                         showConfirmButton: false,
-                        timer: 3000,
+                        timer: 2000,
                     })
                     $('#editModal').modal('hide');
                     $('#categoryEditForm')[0].reset();
                     $('#myTable').DataTable().ajax.reload();
-                } else if (response.status === "error") {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Opps!',
-                        text: 'No changes were made!',
-                        showConfirmButton: false,
-                        timer: 2500,
-                    })
                 } else if (response.status === "validation_error") {
                     $('.text-danger').remove();
                     $.each(response.errors, function(field, errorMessage) {
